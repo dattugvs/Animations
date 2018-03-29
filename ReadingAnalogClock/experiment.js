@@ -43,6 +43,7 @@ var options = [], optionsBox = [], optionsCircle = [], optionsText = [];
 var correctOption;
 var headings = [];
 var countFlag = -1;
+var system1,system2;
 function initialiseScene()
 {
     mySceneTLX = -20.0;
@@ -93,6 +94,8 @@ function setSlider()
     PIEaddDualCommand(computeLabel, computeExpt);
     PIEaddDualCommand(nextLabel, nextExpt);
     PIEaddDualCommand(quizLabel, quizExpt);
+    PIEaddDisplayText("Correct", 0);
+    PIEaddDisplayText("Wrong", 0);
 }
 
 function computeExpt()
@@ -235,14 +238,8 @@ function loadExperimentElements()
     bolt.position.set(myCenterX, myCenterY, myCenterZ);
     PIEaddElement(bolt);
 
-
-
-
     var texture = new THREE.TextureLoader().load('images/steel.jpg');
-    material = new THREE.MeshBasicMaterial(
-    {
-        map: texture
-    });
+    material = new THREE.MeshBasicMaterial({map: texture});
 
     placeDots();
 
@@ -306,6 +303,10 @@ function resetExperiment()
     minutesHand.material.color.setHex(0x000000);
     secondsHand.material.color.setHex(0x000000);
     speed = 1;
+
+    PIEchangeDisplayText("Wrong", 0);
+    PIEchangeDisplayText("Correct", 0);
+
     if(h && circles[h])
         circles[h].material.color.setHex(0xffffff);
     if(!font)
@@ -334,23 +335,23 @@ function updateExperimentElements(t, dt)
     {
         if (font && !numbersLoaded)
         {
-            console.log(hc);
+            //console.log(hc);
             addNumbers();
         }
         if (numbersLoaded && !addedHeadings)
         {
-            console.log(hc+"  hahahahah");
+            //console.log(hc+"  hahahahah");
             addHeadings();
         }
         if (addedHeadings && !addedTimeNumbers)
         {
-            console.log(hc+"  huhuhuhuhuhuhuhuh");
+            //console.log(hc+"  huhuhuhuhuhuhuhuh");
             addTimeNumbers();
         }
         if (addedTimeNumbers && !addedHours && circles[h])
         {
             hc = hc + mc;
-            console.log("1");
+            //console.log("1");
             if (parseInt(hc) > 30)
             {
                 addedHours = 1;
@@ -443,7 +444,7 @@ function updateExperimentElements(t, dt)
                 if (!secondsCount || secondsCount < 0)
                 {
                     getMc();
-                    //console.log(mc);    
+                    ////console.log(mc);    
                     secondsCount = 0;
                 }
                 if (parseInt(secondsCount) <= s - (s % 5))
@@ -457,7 +458,7 @@ function updateExperimentElements(t, dt)
                 {
                     if (parseInt(secondsCount) <= s)
                     {
-                        //console.log(timeNumbers[parseInt(secondsCount)]);
+                        ////console.log(timeNumbers[parseInt(secondsCount)]);
                         timeNumbers[parseInt(secondsCount)].material.color.setHex(0xffffff);
                     }
                     else
@@ -555,9 +556,6 @@ function addOptions()
     var mpone = m==59? 0  : m+1;
     mpone  = (mpone<10 ? ("0"+mpone) : mpone);
 
-    options[1] = hpone+" : "+mmone+" : "+st;
-    options[2] = hmone+" : "+mpone+" : "+st;
-
     var th = parseInt((5 * h) + (m / 12)); 
     var th2;
     if(parseInt(m/5) == 0)
@@ -565,14 +563,15 @@ function addOptions()
     else
         th2 = parseInt(m/5);
     var temp = th2%13;
-    th2 = (th2%13 < 10? ("0"+th2%13) : th2%13);
+    th2 = (th2%13 < 10? ("0"+th2%13) : (th2%13).toString());
     th = (th%60 < 10? ("0"+th%60) : th%60);
-    options[3] = th2+" : "+th+" : "+st; //options[3].name = "Wrong";
-    var ans = options[0];
-    //alert(options);
+    options[1] = th2+" : "+th+" : "+st;
+
+    options[2] = th2+" : "+(th-1)+" : "+st;
+    options[3] = h+" : "+mpone+" : "+st;
     var ans = options[0];
     options = shuffle(options);
-    //console.log(options);
+    ////console.log(options);
     var xd=0,yd,zd;
     var x =[myCenterX-25, myCenterX+25, myCenterX-25, myCenterX+25];
     var y =[myCenterY+8, myCenterY+8, myCenterY-6, myCenterY-6];
@@ -617,11 +616,11 @@ function moveHeadings()
     
     if(exptType == "Quiz")
     {
-        headings[0].position.set(myCenterX + 22-3, myCenterY -13, myCenterZ);
-        headings[1].position.set(myCenterX + 26-3, myCenterY -13, myCenterZ);
-        headings[2].position.set(myCenterX + 25.25-3, myCenterY -13, myCenterZ);
-        headings[3].position.set(myCenterX + 30-3, myCenterY -13, myCenterZ);
-        headings[4].position.set(myCenterX + 30.8-3, myCenterY -13, myCenterZ);
+        headings[0].position.set(myCenterX + 22-3, myCenterY -23, myCenterZ);
+        headings[1].position.set(myCenterX + 26-3, myCenterY -23, myCenterZ);
+        headings[2].position.set(myCenterX + 25.25-3, myCenterY -23, myCenterZ);
+        headings[3].position.set(myCenterX + 30-3, myCenterY -23, myCenterZ);
+        headings[4].position.set(myCenterX + 30.8-3, myCenterY -23, myCenterZ);
     }
     else
     {
@@ -648,12 +647,16 @@ function ondocmousedown(event)
         {
             obj.material.color.setHex('0x00ff00');
             optionsText[obj.name].material.color.setHex('0x00ff00');
+            PIEchangeDisplayText("Correct", parseInt(PIEgetDisplayText("Correct"))+1);
+
         }
         else
         {
             obj.material.color.setHex('0xff0000');
             optionsText[obj.name].material.color.setHex('0xff0000');
+            PIEchangeDisplayText("Wrong", parseInt(PIEgetDisplayText("Wrong"))+1);
         }
+        quizExpt();
     }
 }
 
@@ -855,7 +858,7 @@ function getNewTime()
     minutes.rotateZ(m * -0.105);
     seconds.rotateZ(s * -0.105);
 
-    //console.log(h+" "+m+" "+s);
+    ////console.log(h+" "+m+" "+s);
 }
 
 function addNumbers()
