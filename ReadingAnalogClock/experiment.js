@@ -535,7 +535,6 @@ function updateExperimentElements(t, dt)
     }
     else if(exptType == "Result")
     {
-        //console.log(countFlag);
         countFlag++;
         if(countFlag == 100)
         {
@@ -1167,6 +1166,7 @@ function placeDots()
     dots[15].position.set(-1.35 + 15, 0, 0);
     dots[45].position.set(-30.5 + 15, 0.2, -10);
 }
+
 var helpContent;
 function initialiseHelp(){
     helpContent="";
