@@ -37,13 +37,13 @@ var speed, mc, hc = 0;
 var removedMinutes = 0,
     removedSeconds = 0,
     removedHours = 0;
-var timeNumbersIndices = [];
+var timeNumbersIndices = [],index1;
 var exptType;
 var options = [], optionsBox = [], optionsCircle = [], optionsText = [];
 var correctOption;
 var headings = [];
 var countFlag = -1;
-var system1,system2;
+var ResultText;
 function initialiseScene()
 {
     mySceneTLX = -20.0;
@@ -531,13 +531,27 @@ function updateExperimentElements(t, dt)
             }
         }
     }
+    else if(exptType == "Result")
+    {
+        console.log(countFlag);
+        countFlag++;
+        if(countFlag == 100)
+        {
+            ResultText.visible  = false;
+            optionsText[index1].visible = false;
+            optionsBox[index1].visible  = false;
+            optionsCircle[index1].visible = false;
+            PIEremoveElement(ResultText);
+            quizExpt();
+        }
+       
+    }
     else if(exptType == "Quiz" && !addedOptions)
     {
         addOptions();
     }
     if (boundaryT < dt)
         PIEadjustAnimationTime(dt - boundaryT);
-
 }
 
 function addOptions()
@@ -566,7 +580,10 @@ function addOptions()
     th2 = (th2%13 < 10? ("0"+th2%13) : (th2%13).toString());
     th = (th%60 < 10? ("0"+th%60) : th%60);
     options[1] = th2+" : "+th+" : "+st;
-
+    // if(th2 == "59")f
+    //     th2 = "58";
+    // else if(parseInt(th2[]))
+    //     th2 = th2[0]+""
     options[2] = th2+" : "+(th-1)+" : "+st;
     options[3] = h+" : "+mpone+" : "+st;
     var ans = options[0];
@@ -647,17 +664,73 @@ function ondocmousedown(event)
         {
             obj.material.color.setHex('0x00ff00');
             optionsText[obj.name].material.color.setHex('0x00ff00');
-            PIEchangeDisplayText("Correct", parseInt(PIEgetDisplayText("Correct"))+1);
-
+            PIEchangeDisplayText("Correct", parseInt(PIEgetDisplayText("Correct"))+1);           
+            ShowResult(true,obj.name);
         }
         else
         {
             obj.material.color.setHex('0xff0000');
             optionsText[obj.name].material.color.setHex('0xff0000');
             PIEchangeDisplayText("Wrong", parseInt(PIEgetDisplayText("Wrong"))+1);
+            ShowResult(false,obj.name);
         }
-        quizExpt();
+        
+        //quizExpt();
     }
+}
+
+function ShowResult(bool, index)
+{
+    index1 = index;
+    for(var i=0; i<4; i++)
+    {
+        if(index1!=i)
+        {
+            optionsText[i].visible = false;
+            optionsBox[i].visible  = false;
+            optionsCircle[i].visible = false;
+        }
+    }
+
+    var data,color;
+    if(bool)
+    {
+        data = "Correct";
+        color = 0x00ff00;
+    }
+    else
+    {
+        data = "Wrong";
+        color = 0xff0000;
+    }
+
+    var x,y,z;
+    x = optionsText[index1].position.x;
+    y = optionsText[index1].position.y;
+    z = optionsText[index1].position.z;
+
+    if(index1 <= 1)
+    {
+        y = y-10;
+        if(index1 == 0)
+            x = x-1;
+    }
+    else
+    {
+        y = y + 10;
+        if(index1 == 2)
+            x = x-1;
+    }
+
+    geometry = getGeometry(data,2);
+    material = new THREE.MeshBasicMaterial({color : color});
+    ResultText = new THREE.Mesh(geometry, material);
+    PIEaddElement(ResultText);
+    ResultText.position.set(x,y,z); 
+
+    exptType = "Result"
+    countFlag = 0;
+   
 }
 
 function removeOptions()
@@ -671,6 +744,8 @@ function removeOptions()
            PIEremoveElement(optionsCircle[i]);
         }
     }
+    if(ResultText)
+        PIEremoveElement(ResultText);
 }
 
 function shuffle(array)
