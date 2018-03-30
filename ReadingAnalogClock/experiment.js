@@ -203,6 +203,8 @@ function loadExperimentElements()
 
     initialiseScene();
     setSlider();
+    initialiseInfo();
+    initialiseHelp();
 
     for (i = 0; i < 60; i++)
     {
@@ -533,7 +535,7 @@ function updateExperimentElements(t, dt)
     }
     else if(exptType == "Result")
     {
-        console.log(countFlag);
+        //console.log(countFlag);
         countFlag++;
         if(countFlag == 100)
         {
@@ -585,7 +587,7 @@ function addOptions()
     // else if(parseInt(th2[]))
     //     th2 = th2[0]+""
     options[2] = th2+" : "+(th-1)+" : "+st;
-    options[3] = h+" : "+mpone+" : "+st;
+    options[3] = ht+" : "+mpone+" : "+st;
     var ans = options[0];
     options = shuffle(options);
     ////console.log(options);
@@ -1164,4 +1166,33 @@ function placeDots()
 
     dots[15].position.set(-1.35 + 15, 0, 0);
     dots[45].position.set(-30.5 + 15, 0.2, -10);
+}
+var helpContent;
+function initialiseHelp(){
+    helpContent="";
+    helpContent = helpContent + "<h2>Compare Decimal Numbers</h2>";
+    helpContent = helpContent + "<h3>About the experiment</h3>";
+    helpContent = helpContent + "<p>To Read the time in the analog clock</p>";
+    helpContent = helpContent + "<h3>Animation control</h3>";
+    helpContent = helpContent + "Compute allows you to Read the time in the clock<br>";
+    helpContent = helpContent + "Next Example teaches the concept by taking another example.<br>";
+    helpContent = helpContent + "Quiz Me questions your understanding of this concept.<br>";
+    helpContent = helpContent + "Correct and Wrong gives you the total correct and wrong answers.</p>";
+    helpContent = helpContent + "<p>You can compute the quiz question before clicking any option</p>";
+    helpContent = helpContent + "<p>You can pause and resume the animation by using the pause/play nutton on the top line</p>";
+    helpContent = helpContent + "<p>You can slow down and speed up the animation by using the speed control buttons</p>";
+    helpContent = helpContent + "<p>The round button is for resetting the animation.</p>";
+    helpContent = helpContent + "<h2>Happy Experimenting</h2>";
+    PIEupdateHelp(helpContent);
+}
+
+var infoContent;
+function initialiseInfo(){
+    infoContent =  "";
+    infoContent = infoContent + "<h2>Experiment Concepts</h2>";
+    infoContent = infoContent + "<h3>About the experiment</h3>";
+    infoContent = infoContent + "<p>To read the analogue clock, Use the little hand to read the hour (1-12), Use the big hand to read the minutes (0-60), Use the longest hand to read the seconds (0-60)</p>"; 
+    infoContent = infoContent + "<p>Put these together to get the time in the Hours : minutes : seconds format</p>";
+    infoContent = infoContent + "<h2>Happy Experimenting</h2>";
+    PIEupdateInfo(infoContent);
 }
