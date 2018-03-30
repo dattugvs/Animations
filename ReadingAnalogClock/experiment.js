@@ -533,7 +533,6 @@ function updateExperimentElements(t, dt)
     }
     else if(exptType == "Result")
     {
-        console.log(countFlag);
         countFlag++;
         if(countFlag == 100)
         {
