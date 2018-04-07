@@ -225,6 +225,8 @@ function loadExperimentElements()
         font = response;
     });
 
+    alert(window.innerHeight+" "+window.innerWidth);
+
     initialiseScene();
     setSlider();
     initialiseInfo();
