@@ -225,8 +225,6 @@ function loadExperimentElements()
         font = response;
     });
 
-    alert(window.innerHeight+" "+window.innerWidth);
-
     initialiseScene();
     setSlider();
     initialiseInfo();
@@ -384,8 +382,7 @@ function updateExperimentElements(t, dt)
                     data = "0" + h;
                 else
                     data = h;
-                geometry = new THREE.TextGeometry(data,
-                {
+                geometry = new THREE.TextGeometry(data,{
                     font: font,
                     size: 1.5,
                     height: 0.01,
@@ -396,8 +393,17 @@ function updateExperimentElements(t, dt)
                     color: 0xD4318C
                 });
                 hhResult = new THREE.Mesh(geometry, material);
-                hhResult.position.set(myCenterX + 19, myCenterY + 2, myCenterZ);
                 PIEaddElement(hhResult);
+
+                if(window.innerWidth<=400)
+                {
+                    s1 = headings[2].clone();
+                    s1.position.set(myCenterX-2, myCenterY -20, myCenterZ);
+                    PIEaddElement(s1);
+                    hhResult.position.set(myCenterX-5, myCenterY -20, myCenterZ);
+                }
+                else
+                    hhResult.position.set(myCenterX + 19, myCenterY + 2, myCenterZ);
             }
             else if (parseInt(hc) > 5)
             {
@@ -439,8 +445,18 @@ function updateExperimentElements(t, dt)
                         color: 0x0000ff
                     });
                     mmResult = new THREE.Mesh(geometry, material);
-                    mmResult.position.set(myCenterX + 23.3, myCenterY + 2, myCenterZ);
                     PIEaddElement(mmResult);
+
+                    if(window.innerWidth<=400)
+                    {
+                        s2 = headings[3].clone();
+                        s2.position.set(myCenterX+1.8, myCenterY -20, myCenterZ);
+                        mmResult.position.set(myCenterX -1.2, myCenterY -20, myCenterZ);
+                        PIEaddElement(s2);
+                    }
+                    else
+                        mmResult.position.set(myCenterX + 23.3, myCenterY + 2, myCenterZ);
+
                     minutesCount = 60;
                     addedMinutes = 1;
                     minutesHand.material.color.setHex(0x000000);
@@ -496,8 +512,11 @@ function updateExperimentElements(t, dt)
                             color: 0x008000
                         });
                         ssResult = new THREE.Mesh(geometry, material);
-                        ssResult.position.set(myCenterX + 27.5, myCenterY + 2, myCenterZ);
                         PIEaddElement(ssResult);
+                        if(window.innerWidth<=400)
+                            ssResult.position.set(myCenterX + 2.6, myCenterY -20, myCenterZ);
+                        else
+                            ssResult.position.set(myCenterX + 27.5, myCenterY + 2, myCenterZ);
                         secondsCount = 60;
                         addedSeconds = 1;
                         secondsHand.material.color.setHex(0x000000);
@@ -508,30 +527,28 @@ function updateExperimentElements(t, dt)
             }
 
         }
-        if (addedSeconds && addedSeperators < 2)
+        if (addedSeconds && addedSeperators < 2 && window.innerWidth>400)
         {
             if (addedSeperators == 0)
             {
-                //alert("adding...");
                 s1 = headings[2].clone();
                 s2 = headings[3].clone();
                 s1.position.set(myCenterX + 23, myCenterY + 4, myCenterZ);
-                s2.position.set(myCenterX + 26.8, myCenterY + 4, myCenterZ)
+                s2.position.set(myCenterX + 26.8, myCenterY + 4, myCenterZ);
                 PIEaddElement(s1);
-                PIEaddElement(s2);
+                PIEaddElement(s2);   
                 addedSeperators = 1
             }
             else if (addedSeperators == 1)
             {
-                if (s1.position.y > myCenterY + 2)
+                if (s1.position.y > myCenterY + 2 && window.innerWidth>380)
                 {
-                    //alert("changing 2");
                     s1.position.set(myCenterX + 22.25, s1.position.y - mc, myCenterZ);
                     s2.position.set(myCenterX + 26.8, s2.position.y - mc, myCenterZ);
                 }
                 else
                 {
-                    //PIEstopAnimation();
+                    PIEstopAnimation();
                     addedSeperators = 0;
                     addedSeconds = 0;
                     removedMinutes = 0;
