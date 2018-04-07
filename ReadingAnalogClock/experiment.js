@@ -284,7 +284,7 @@ function loadExperimentElements()
         color: 0x000000
     });
     minutesHand = new THREE.Mesh(geometry, material);
-    minutesHand.position.set(myCenterX, myCenterY + 6, myCenterZ-1);
+    minutesHand.position.set(myCenterX, myCenterY + 6, myCenterZ+0.1);
     minutes.add(minutesHand);
 
     geometry = new THREE.BoxGeometry(0.1, 16, 0.1);
@@ -988,7 +988,7 @@ function addNumbers()
             r = 1.3;
 
         geometry = new THREE.CircleGeometry(r, 64);
-        material = new THREE.MeshBasicMaterial({color: 0x000000});
+        material = new THREE.MeshBasicMaterial({color: 0xffffff});
         circles[i] = new THREE.Mesh(geometry, material);
         PIEaddElement(circles[i]);
     }
@@ -1007,18 +1007,18 @@ function addNumbers()
     numbers[11].position.set(numbers[11].position.x + 1 - 14.8, numbers[11].position.y - 1, myCenterZ);
     //changeDotsDir();
 
-    circles[0].position.set(myCenterX + 0.1, myCenterY + 13.3, myCenterZ);
-    circles[1].position.set(myCenterX + 6.8, myCenterY + 11.8, myCenterZ);
-    circles[2].position.set(myCenterX + 11.6, myCenterY + 7.1, myCenterZ);
-    circles[3].position.set(myCenterX + 13.5, myCenterY, myCenterZ);
-    circles[4].position.set(myCenterX + 11.65, myCenterY - 7, myCenterZ);
-    circles[5].position.set(myCenterX + 6.5, myCenterY - 12, myCenterZ);
-    circles[6].position.set(myCenterX, myCenterY - 13.6, myCenterZ);
-    circles[7].position.set(myCenterX - 7, myCenterY - 11.4, myCenterZ);
-    circles[8].position.set(myCenterX - 11.6, myCenterY - 6.6, myCenterZ);
-    circles[9].position.set(myCenterX - 13.5, myCenterY + 0.2, myCenterZ);
-    circles[10].position.set(myCenterX - 10.6, myCenterY + 7, myCenterZ);
-    circles[11].position.set(myCenterX - 5.7, myCenterY + 11.5, myCenterZ);
+    circles[0].position.set(myCenterX + 0.05, myCenterY + 12.95, myCenterZ);
+    circles[1].position.set(myCenterX + 6.6, myCenterY + 11.56, myCenterZ);
+    circles[2].position.set(myCenterX + 11.4, myCenterY + 6.8, myCenterZ);
+    circles[3].position.set(myCenterX + 13.3, myCenterY, myCenterZ);
+    circles[4].position.set(myCenterX + 11.45, myCenterY - 6.9, myCenterZ);
+    circles[5].position.set(myCenterX + 6.5, myCenterY - 11.55, myCenterZ);
+    circles[6].position.set(myCenterX-0.05, myCenterY - 13.3, myCenterZ);
+    circles[7].position.set(myCenterX - 6.8, myCenterY - 11.2, myCenterZ);
+    circles[8].position.set(myCenterX - 11.55, myCenterY - 6.8, myCenterZ);
+    circles[9].position.set(myCenterX - 13.42, myCenterY + 0.2, myCenterZ);
+    circles[10].position.set(myCenterX - 10.66, myCenterY + 6.7, myCenterZ);
+    circles[11].position.set(myCenterX - 6, myCenterY + 11.2, myCenterZ);
     numbersLoaded = 1;
 }
 
