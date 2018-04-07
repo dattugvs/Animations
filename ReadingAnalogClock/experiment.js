@@ -983,17 +983,14 @@ function addNumbers()
         numbers[i].position.set(x - 1, y - 2, z);
 
         PIEaddElement(numbers[i]);
-        var w = 1.5;
+        var r = 1;
         if (i > 9 || i == 0)
-            w = 1.8;
+            r = 1.3;
 
-        geometry = new THREE.CircleGeometry(w, 64);
-        material = new THREE.MeshBasicMaterial(
-        {
-            color: 0xffffff
-        });
+        geometry = new THREE.CircleGeometry(r, 64);
+        material = new THREE.MeshBasicMaterial({color: 0x000000});
         circles[i] = new THREE.Mesh(geometry, material);
-        //PIEaddElement(circles[i]);
+        PIEaddElement(circles[i]);
     }
 
     numbers[0].position.set(numbers[0].position.x - 0.7 - 14.6, numbers[0].position.y - 1.1, myCenterZ);
@@ -1013,7 +1010,7 @@ function addNumbers()
     circles[0].position.set(myCenterX + 0.1, myCenterY + 13.3, myCenterZ);
     circles[1].position.set(myCenterX + 6.8, myCenterY + 11.8, myCenterZ);
     circles[2].position.set(myCenterX + 11.6, myCenterY + 7.1, myCenterZ);
-    circles[3].position.set(myCenterX + 13.5, myCenterY, -10);
+    circles[3].position.set(myCenterX + 13.5, myCenterY, myCenterZ);
     circles[4].position.set(myCenterX + 11.65, myCenterY - 7, myCenterZ);
     circles[5].position.set(myCenterX + 6.5, myCenterY - 12, myCenterZ);
     circles[6].position.set(myCenterX, myCenterY - 13.6, myCenterZ);
@@ -1190,11 +1187,11 @@ function placeDots()
 var helpContent;
 function initialiseHelp(){
     helpContent="";
-    helpContent = helpContent + "<h2>Compare Decimal Numbers</h2>";
+    helpContent = helpContent + "<h2>Reading Analog Clock</h2>";
     helpContent = helpContent + "<h3>About the experiment</h3>";
     helpContent = helpContent + "<p>To Read the time in the analog clock</p>";
     helpContent = helpContent + "<h3>Animation control</h3>";
-    helpContent = helpContent + "Compute allows you to Read the time in the clock<br>";
+    helpContent = helpContent + "Learn allows you to read the time in the clock<br>";
     helpContent = helpContent + "Next Example teaches the concept by taking another example.<br>";
     helpContent = helpContent + "Quiz Me questions your understanding of this concept.</p>";
     helpContent = helpContent + "<p>You can compute the quiz question before clicking any option</p>";
@@ -1210,6 +1207,7 @@ function initialiseInfo(){
     infoContent =  "";
     infoContent = infoContent + "<h2>Experiment Concepts</h2>";
     infoContent = infoContent + "<h3>About the experiment</h3>";
+    infoContent = infoContent + "<p>There are 3 hands to indicate hours, minutes, seconds</p>"; 
     infoContent = infoContent + "<p>To read the analogue clock, Use the little hand to read the hour (1-12), Use the big hand to read the minutes (0-60), Use the longest (thinnest) hand to read the seconds (0-60)</p>"; 
     infoContent = infoContent + "<p>Put these together to get the time in the Hours : minutes : seconds format</p>";
     infoContent = infoContent + "<h2>Happy Experimenting</h2>";
