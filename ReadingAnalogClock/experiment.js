@@ -108,8 +108,12 @@ function computeExpt()
     hCount = 0;
     tempHc = 0;
     moveHeadings();
-    if(h && circles[h])
-        circles[h].material.color.setHex(0xffffff);
+    if(h && circles.length == 12)
+    {
+        for (var i = 0; i < 12; i++)
+            if(circles[i].material.color.getHex != 0xffffff)
+                circles[i].material.color.setHex(0xffffff);
+    }
     hoursHand.material.color.setHex(0x000000);
     minutesHand.material.color.setHex(0x000000);
     secondsHand.material.color.setHex(0x000000);
@@ -131,8 +135,13 @@ function nextExpt()
     hCount = 0;
     tempHc = 0;
 
-    if(h && circles[h])
-        circles[h].material.color.setHex(0xffffff);
+    if(h && circles.length == 12)
+    {
+        for (var i = 0; i < 12; i++)
+            if(circles[i].material.color.getHex != 0xffffff)
+                circles[i].material.color.setHex(0xffffff);
+    }
+    
     if(!font)
     {
         h= 5;
@@ -154,8 +163,12 @@ function quizExpt()
 {
     PIEstopAnimation();
     removeOptions();
-    if(h && circles[h])
-        circles[h].material.color.setHex(0xffffff);
+    if(h && circles.length == 12)
+    {
+        for (var i = 0; i < 12; i++)
+            if(circles[i].material.color.getHex != 0xffffff)
+                circles[i].material.color.setHex(0xffffff);
+    }
     addedOptions = 0;
     exptType = "Quiz";
     moveHeadings();
@@ -328,8 +341,12 @@ function resetExperiment()
     hCount = 0;
     tempHc = 0;
    
-    if(h && circles[h])
-        circles[h].material.color.setHex(0xffffff);
+    if(h && circles.length == 12)
+    {
+        for (var i = 0; i < 12; i++)
+            if(circles[i].material.color.getHex != 0xffffff)
+                circles[i].material.color.setHex(0xffffff);
+    }
     if(!font)
     {
         h= 5;
