@@ -108,9 +108,9 @@ function computeExpt()
     hCount = 0;
     tempHc = 0;
     moveHeadings();
-    if(h && circles.length == 12)
+    if(h && circles.length == 13)
     {
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 13; i++)
             if(circles[i].material.color.getHex != 0xffffff)
                 circles[i].material.color.setHex(0xffffff);
     }
@@ -135,9 +135,9 @@ function nextExpt()
     hCount = 0;
     tempHc = 0;
 
-    if(h && circles.length == 12)
+    if(h && circles.length == 13)
     {
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 13; i++)
             if(circles[i].material.color.getHex != 0xffffff)
                 circles[i].material.color.setHex(0xffffff);
     }
@@ -163,9 +163,9 @@ function quizExpt()
 {
     PIEstopAnimation();
     removeOptions();
-    if(h && circles.length == 12)
+    if(h && circles.length == 13)
     {
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 13; i++)
             if(circles[i].material.color.getHex != 0xffffff)
                 circles[i].material.color.setHex(0xffffff);
     }
@@ -341,9 +341,9 @@ function resetExperiment()
     hCount = 0;
     tempHc = 0;
    
-    if(h && circles.length == 12)
+    if(h && circles.length == 13)
     {
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 13; i++)
             if(circles[i].material.color.getHex != 0xffffff)
                 circles[i].material.color.setHex(0xffffff);
     }
@@ -389,7 +389,7 @@ function updateExperimentElements(t, dt)
             if(parseInt(hc)%10 == 0 && hCount < h)
             {
                 hCount = parseInt(hc)/10;
-                if(circles[hCount].material.color.getHex != 0xD4318C )
+                if(circles[hCount].material.color.getHex != 0xD4318C && hCount > 0)
                 {
                     //alert(hCount+" "+hc);
                     if(hCount!=0)
@@ -1077,6 +1077,9 @@ function addNumbers()
     circles[9].position.set(myCenterX - 13.42, myCenterY + 0.2, myCenterZ);
     circles[10].position.set(myCenterX - 10.66, myCenterY + 6.7, myCenterZ);
     circles[11].position.set(myCenterX - 6, myCenterY + 11.2, myCenterZ);
+    circles[12] = circles[0].clone();
+    PIEaddElement(circles[12]);
+    circles[12].position.set(myCenterX + 0.05, myCenterY + 12.95, myCenterZ);
     numbersLoaded = 1;
 }
 
@@ -1251,7 +1254,7 @@ function initialiseHelp(){
     helpContent = helpContent + "<h3>Animation control</h3>";
     helpContent = helpContent + "<p>Top right corner contains a control panel with the followong 3 buttons.</p>";
     helpContent = helpContent + "Learn button explains you to read the time in the clock<br>";
-    helpContent = helpContent + "Next teaches the concept by taking another example.<br>";
+    helpContent = helpContent + "Next Example teaches the concept by taking another example.<br>";
     helpContent = helpContent + "Quiz Me questions your understanding of this concept.</p>";
     helpContent = helpContent + "<p>You can compute the quiz question before clicking any option.</p>";
     helpContent = helpContent + "<p>You can pause and resume the animation by using the pause/play nutton on the top line</p>";
