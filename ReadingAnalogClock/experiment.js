@@ -19,6 +19,7 @@ var numbersLoaded = 0;
 var h = -1,
     m = -1,
     s = -1;
+var hCount = 0, tempHc = 0;
 var hours, minutes, seconds;
 var hoursHand, minutesHand, secondsHand;
 var timeNumbers = [],
@@ -104,6 +105,8 @@ function computeExpt()
     removeOptions();
     initialiseOtherVariables();
     exptType = "Compute";
+    hCount = 0;
+    tempHc = 0;
     moveHeadings();
     if(h && circles[h])
         circles[h].material.color.setHex(0xffffff);
@@ -125,6 +128,8 @@ function nextExpt()
     minutesHand.material.color.setHex(0x000000);
     secondsHand.material.color.setHex(0x000000);
     speed = 1;
+    hCount = 0;
+    tempHc = 0;
 
     if(h && circles[h])
         circles[h].material.color.setHex(0xffffff);
@@ -320,6 +325,8 @@ function resetExperiment()
     minutesHand.material.color.setHex(0x000000);
     secondsHand.material.color.setHex(0x000000);
     speed = 1;
+    hCount = 0;
+    tempHc = 0;
    
     if(h && circles[h])
         circles[h].material.color.setHex(0xffffff);
@@ -349,35 +356,33 @@ function updateExperimentElements(t, dt)
     {
         if (font && !numbersLoaded)
         {
-            //console.log(hc);
             addNumbers();
         }
         if (numbersLoaded && !addedHeadings)
         {
-            //console.log(hc+"  hahahahah");
             addHeadings();
         }
         if (addedHeadings && !addedTimeNumbers)
         {
-            //console.log(hc+"  huhuhuhuhuhuhuhuh");
             addTimeNumbers();
         }
         if (addedTimeNumbers && !addedHours && circles[h])
         {
             hc = hc + mc;
-            //console.log("1");
-            if (parseInt(hc) > 30)
+            if(parseInt(hc)%10 == 0 && hCount < h)
             {
-                addedHours = 1;
-                minutesHand.material.color.setHex(0x0000ff);
+                hCount = parseInt(hc)/10;
+                if(circles[hCount].material.color.getHex != 0xD4318C )
+                {
+                    //alert(hCount+" "+hc);
+                    if(hCount!=0)
+                        circles[hCount - 1].material.color.setHex(0xffffff);
+                    circles[hCount].material.color.setHex(0xD4318C);
+                }
+
             }
-            else if (parseInt(hc) > 25)
-                hoursHand.material.color.setHex(0x000000);
-            else if (parseInt(hc) > 15)
+            if(hCount == h)
             {
-                if (hhResult)
-                    PIEremoveElement(hhResult);
-                circles[h].material.color.setHex(0xD4318C);
                 if (h < 10)
                     data = "0" + h;
                 else
@@ -404,11 +409,23 @@ function updateExperimentElements(t, dt)
                 }
                 else
                     hhResult.position.set(myCenterX + 19, myCenterY + 2, myCenterZ);
+                
+                hoursHand.material.color.setHex(0x000000);
+                tempHc = parseInt(hc) + 10;
+                hCount++;     
             }
-            else if (parseInt(hc) > 5)
+            else if(hCount > h && tempHc == parseInt(hc))
             {
-                minutesHand.material.color.setHex(0x000000);
+                addedHours = 1;
+                minutesHand.material.color.setHex(0x0000ff);
+            }
+            else if (parseInt(hc) == 0 && hoursHand.material.color.getHex != 0xD4318C)
+            {
+                if(minutesHand.material.color.getHex != 0x000000)
+                    minutesHand.material.color.setHex(0x000000);
                 hoursHand.material.color.setHex(0xD4318C);
+                if (hhResult)
+                    PIEremoveElement(hhResult);
             }
         }
         if (addedHours && !addedMinutes)
@@ -613,15 +630,20 @@ function addOptions()
     th2 = (th2%13 < 10? ("0"+th2%13) : (th2%13).toString());
     th = (th%60 < 10? ("0"+th%60) : th%60);
     options[1] = th2+" : "+th+" : "+st;
-    // if(th2 == "59")f
-    //     th2 = "58";
-    // else if(parseInt(th2[]))
-    //     th2 = th2[0]+""
-    options[2] = th2+" : "+(th-1)+" : "+st;
+
+
+    var thmo;
+    if(th == 0)
+        thmo = "02";
+    else
+        thmo = (th-1)<9 ? "0"+(th-1) : (th-1);
+    
+    options[2] = th2+" : "+thmo+" : "+st;
     options[3] = ht+" : "+mpone+" : "+st;
     var ans = options[0];
+    console.log(options);
     options = shuffle(options);
-    ////console.log(options);
+
     var xd=0,yd,zd,bx=0;
     var x =[myCenterX-25, myCenterX+25, myCenterX-25, myCenterX+25];
     var y =[myCenterY+8, myCenterY+8, myCenterY-6, myCenterY-6];
@@ -631,7 +653,7 @@ function addOptions()
             correctOption = i;
         if(i%2)
         {
-            xd = 2;
+            xd = 2.3;
             bx = 1.5;
         }
         else
@@ -1210,10 +1232,11 @@ function initialiseHelp(){
     helpContent = helpContent + "<h3>About the experiment</h3>";
     helpContent = helpContent + "<p>To Read the time in the analog clock</p>";
     helpContent = helpContent + "<h3>Animation control</h3>";
-    helpContent = helpContent + "Learn allows you to read the time in the clock<br>";
-    helpContent = helpContent + "Next Example teaches the concept by taking another example.<br>";
+    helpContent = helpContent + "<p>Top right corner contains a control panel with the followong 3 buttons.</p>";
+    helpContent = helpContent + "Learn button explains you to read the time in the clock<br>";
+    helpContent = helpContent + "Next teaches the concept by taking another example.<br>";
     helpContent = helpContent + "Quiz Me questions your understanding of this concept.</p>";
-    helpContent = helpContent + "<p>You can compute the quiz question before clicking any option</p>";
+    helpContent = helpContent + "<p>You can compute the quiz question before clicking any option.</p>";
     helpContent = helpContent + "<p>You can pause and resume the animation by using the pause/play nutton on the top line</p>";
     helpContent = helpContent + "<p>You can slow down and speed up the animation by using the speed control buttons</p>";
     helpContent = helpContent + "<p>The round button is for resetting the animation.</p>";
@@ -1226,8 +1249,19 @@ function initialiseInfo(){
     infoContent =  "";
     infoContent = infoContent + "<h2>Experiment Concepts</h2>";
     infoContent = infoContent + "<h3>About the experiment</h3>";
-    infoContent = infoContent + "<p>There are 3 hands to indicate hours, minutes, seconds</p>"; 
-    infoContent = infoContent + "<p>To read the analogue clock, Use the little hand to read the hour (1-12), Use the big hand to read the minutes (0-60), Use the longest (thinnest) hand to read the seconds (0-60)</p>"; 
+    infoContent = infoContent + "<p>To Read the time in the analog clock</p>";
+    infoContent = infoContent + "<p>There are 24 hours in a day. In analog clock, there are 12 hours. Therefore for a single day, clock will complete 2 cycles (1 cycle = 12 hours, 2 cycles = 24 hours). Each (one) hour equals to 60 minutes. Each (one) minute equal to 60 seconds.</p>"; 
+    infoContent = infoContent + "<h4>Hours</h4>";
+    infoContent = infoContent + "<p>Analog clock shows 12 numbers (1-12) indicating hours. Hours hand shows the hours.</p>";
+    infoContent = infoContent + "<h4>Minutes</h4>";
+    infoContent = infoContent + "<p>Since 1 hour = 60 minutes, there are 60 dots in a clock each indiacating a single minute from 0 to 59. Therefore when the minutes hand completes a cycle (60 minutes) then hours hand completely moves towards the next hour.</p>";
+    infoContent = infoContent + "<h4>seconds</h4>";
+    infoContent = infoContent + "<p>Since 1 minute = 60 seconds, 60 dots in a clock represent seconds from 0 to 59. Therefore when the seconds hand completes a cycle (60 seconds) then the minutes hand completely moves towards the next minute.</p>";    
+    infoContent = infoContent + "<h4>Read the Time </h4>"
+    infoContent = infoContent + "<p>To read the time, Use the shorter hand to read the hours, Use the longer hand to read the minutes, Use the longest (thinnest) hand to read the seconds</p>"; 
+    infoContent = infoContent + "<p><u><b>Hours:</b></u>The number where the hours hand is present or the number from where hours hand is just corssed is the 'Hour' value of the time in the clock.</p>";
+    infoContent = infoContent + "<p><u><b>Minutes:</b></u>The number (0 t0 59) where the minutes hand is present or the number from where minutes hand is just corssed is the 'Minute' value of the time in the clock.</p>";
+    infoContent = infoContent + "<p><u><b>Seconds:</b></u>The number (0 t0 59) where the seconds hand is present is the 'Seconds' value of the time in the clock.</p>";
     infoContent = infoContent + "<p>Put these together to get the time in the Hours : minutes : seconds format</p>";
     infoContent = infoContent + "<h2>Happy Experimenting</h2>";
     PIEupdateInfo(infoContent);
