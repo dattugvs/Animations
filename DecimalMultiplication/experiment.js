@@ -23,7 +23,7 @@ var nextLabel;
 var quizLabel;
 var num1;
 var num2;
-var result;
+var result, resText;
 var answer;
 var minNumber, maxNumber, numberStep;
 
@@ -65,7 +65,12 @@ function initialiseScene()
     myCenterY  = (mySceneTLY + mySceneBRY) / 2.0;
     wallThickness = 0.20;
 
+    PIEscene.background = new THREE.Color(0xffffff);
+    PIEscene.add(new THREE.AmbientLight(0x606060));
+
     raycaster = new THREE.Raycaster();
+    document.addEventListener('mousedown', ondocmousedown, false);
+    document.addEventListener('mousemove', onDocumentMouseMove, false );
 }
 
 function intialiseOtherVariables()
@@ -130,13 +135,13 @@ function loadExperimentElements()
     initialiseScene();
     loadFont();
 
-    geometry = new THREE.BoxGeometry(11,6, wallThickness );
-    material = new THREE.MeshLambertMaterial( {color:  0xbfd1e5} );
-    myBack = new THREE.Mesh( geometry, material );
-    myBack.position.set(myCenterX, myCenterY, -0.1);
-    myBack.castShadow = false;
-    myBack.receiveShadow = false;
-    PIEaddElement(myBack);
+    // geometry = new THREE.BoxGeometry(11,6, wallThickness );
+    // material = new THREE.MeshLambertMaterial( {color:  0xbfd1e5} );
+    // myBack = new THREE.Mesh( geometry, material );
+    // myBack.position.set(myCenterX, myCenterY, -0.1);
+    // myBack.castShadow = false;
+    // myBack.receiveShadow = false;
+    // PIEaddElement(myBack);
 
     geometry = new THREE.BoxGeometry(1.5,0.55,0 );
     material = new THREE.MeshLambertMaterial( {color: 0x222222} );
@@ -145,6 +150,8 @@ function loadExperimentElements()
     headerBox.castShadow = false;
     headerBox.receiveShadow = false;
     PIEaddElement(headerBox);
+
+
 
     setSlider();
     PIEsetAreaOfInterest(mySceneTLX, mySceneTLY, mySceneBRX, mySceneBRY);
@@ -179,22 +186,41 @@ function resetExperiment()
 
 function updateExperimentElements(t, dt)
 {   
+    //console.log(stepCount);
     if(exptType == "Quiz")
     {
         if(qflag == 0)
+        {
             makeSteps();
-        if(qflag == 1)
+            qflag++;
+        }
+        else if(qflag == 1)
         {
             removeSteps();
+            qflag++;
         }
-        if(qflag == 2)
+        else if(qflag == 2)
         {
             if(!font)
                 qflag--;
             else
                 headerText('?');
+            qflag++;
         }
-        qflag++;
+        else if (qflag >= 50 || qflag == -1)
+        {
+            qflag++;
+            //alert(qflag);
+        }
+        if(qflag >= 150)
+        {
+            if(resText)
+            {
+                //alert("asdfg");
+                PIEremoveElement(resText);
+            }
+            quizExpt();
+        }
     }
     else
     {
@@ -323,6 +349,7 @@ function makeSteps()
     multiplicand = (max.toString().replace(".", ""));
     multiplier   = (min.toString().replace(".", ""));
 
+
     if(exptType == 'Compute')
         getSteps();
     else
@@ -398,7 +425,7 @@ function onDocumentMouseMove( event )
         {
             var intersection = intersects[ i ],
             obj = intersection.object;
-            //console.log("object:", obj);
+            ////console.log("object:", obj);
         }
     }
 }
@@ -414,12 +441,43 @@ function ondocmousedown(event)
     {
         var intersection = intersects[0],
         obj = intersection.object;
+        for(var i=0; i<4; i++)
+            if(i!= obj.name)
+            {
+                PIEremoveElement(options[i]);
+                PIEremoveElement(optionsBox[i]);
+            }
         if(obj.name == correctOption)
         {
-            obj.material.color.setHex('0x00ff00')
+            obj.material.color.setHex('0x00ff00');
+            geometry = getGeometry("Correct",0.1);
+            resText = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color:0x00ff00}));
+            PIEaddElement(resText);
         }
         else
-            obj.material.color.setHex('0xff0000')
+        {
+            obj.material.color.setHex('0xff0000');
+            geometry = getGeometry("Wrong",0.1);
+            resText = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color:0xff0000}));
+            PIEaddElement(resText);
+        }
+        switch(obj.name)
+        {
+            case "0": resText.position.set(myCenterX+1.1, myCenterY+0.05, 0);
+                      break;
+
+            case "1": resText.position.set(myCenterX-1.5, myCenterY+0.05, 0);
+                      break;
+            case "2": resText.position.set(myCenterX+1.1, myCenterY-0.45, 0);
+                      break;
+            case "3": resText.position.set(myCenterX-1.5, myCenterY-0.45, 0);
+                      break;
+        }
+        if(parseInt(obj.name)%2)
+            resText.position.set(myCenterX-1.8, myCenterY-0.25, 0);
+        else
+            resText.position.set(myCenterX+0.8, myCenterY-0.25, 0);
+        qflag = 50;
     }
 }
 
@@ -434,9 +492,9 @@ function generateOptions()
     tempOptions[2] = (num+1)   + '.' + (parseInt(arr[1])+1010).toString().substring(0, 4);
     tempOptions[3] = num       + '.' + (parseInt(arr[1])+2010).toString().substring(0, 4);
     
-    console.log(tempOptions);
+    //console.log(tempOptions);
     tempOptions = shuffle(tempOptions);
-    console.log(tempOptions);
+    //console.log(tempOptions);
 
     
     geometry = getGeometry(tempOptions[0],0.1);
@@ -450,7 +508,7 @@ function generateOptions()
     optionsBox[0].position.set(myCenterX-1.5, myCenterY+0.05, 0);
     optionsBox[0].castShadow = false;
     optionsBox[0].receiveShadow = false;
-    optionsBox[0].name = "option-1";
+    optionsBox[0].name = "0";
     PIEaddElement(optionsBox[0]);
 
     optionsBox[0].addEventListener('click', function(){
@@ -468,7 +526,7 @@ function generateOptions()
     optionsBox[1].position.set(myCenterX+1.1, myCenterY+0.05, 0);
     optionsBox[1].castShadow = false;
     optionsBox[1].receiveShadow = false;
-    optionsBox[1].name = "option-2";
+    optionsBox[1].name = "1";
     PIEaddElement(optionsBox[1]);
 
 
@@ -483,7 +541,7 @@ function generateOptions()
     optionsBox[2].position.set(myCenterX-1.5, myCenterY-0.45, 0);
     optionsBox[2].castShadow = false;
     optionsBox[2].receiveShadow = false;
-    optionsBox[2].name = "option-3";
+    optionsBox[2].name = "2";
     PIEaddElement(optionsBox[2]);
 
 
@@ -498,7 +556,7 @@ function generateOptions()
     optionsBox[3].position.set(myCenterX+1.1, myCenterY-0.45, 0);
     optionsBox[3].castShadow = false;
     optionsBox[3].receiveShadow = false;
-    optionsBox[3].name = "option-4";
+    optionsBox[3].name = "3";
     PIEaddElement(optionsBox[3]);
 
     // PIEsetClick(optionsBox[0], checkResult1);
@@ -510,7 +568,7 @@ function generateOptions()
     {
         if(tempOptions[i] == result)
         {
-            correctOption = "option-"+(i+1);
+            correctOption = i.toString();
             break;
         }
     }
