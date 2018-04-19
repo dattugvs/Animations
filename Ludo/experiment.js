@@ -516,7 +516,7 @@ function addHeadings()
     PIEaddElement(numres[1]);
 
     geometry = getGeometry("Correct",1);
-    material = new THREE.MeshBasicMaterial({color : 0x00ff00});
+    material = new THREE.MeshBasicMaterial({color : 0x00FF00});
     quizres[0] = new THREE.Mesh(geometry, material);
     quizres[0].visible = false;
     quizres[0].position.set(myCenterX-16, startY[10], myCenterZ);
@@ -612,7 +612,7 @@ function initialiseInfo(){
     infoContent = infoContent + "<h4>Ludo Board</h4>";
     infoContent = infoContent + "<p>A ludo board consists of 4 colors each with 4 objects. Each object should start from its origin and travel the whole board and finally should visit the 'home' of their group (Ex: Red goes to Red home)</p>";
     infoContent = infoContent +" <h4>Counting with Ludo</h4>";
-    infoContent = infoContent + "<p>Similar to the game, a single object (green group - black circle) will travel its journey by moving step by step (counting steps) according to the values from the dice.</p>";
+    infoContent = infoContent + "<p>Similar to the game, a single object (green group) will travel its journey by moving step by step (counting steps) according to the values from the dice.</p>";
     infoContent = infoContent + "<p>Present Number shows the current position of the object</p>";
     infoContent = infoContent + "<p>Number on dice shows the number appeared after rolling the dice (by clicking the roll dice button)</p>";
     infoContent = infoContent + "<p>Number line is used to count the numbers from current position according to the dice value. Parallely circle (object) will move from one place to another.</p>";
