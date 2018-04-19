@@ -363,6 +363,8 @@ function updateExperimentElements(t, dt)
 
     if(addedHeadings && (exptType == "Rollc" || exptType == "Rollq"))
     {
+            dice.rotation.set(0,0,0);
+            dice.position.set(myCenterX+15, myCenterY-5, myCenterZ);
             if(diceNumber == 3 || diceNumber == 4)
                   dice.rotateX(0.1);
             else
@@ -599,7 +601,7 @@ function initialiseHelp(){
     helpContent = helpContent + "<p>You can pause and resume the animation by using the pause/play nutton on the top line</p>";
     helpContent = helpContent + "<p>You can slow down and speed up the animation by using the speed control buttons</p>";
     helpContent = helpContent + "<p>The round button is for resetting the animation.</p>";
-    helpContent = helpContent + "<h3>Note:</h3>Please click 'Roll Dice' only if the step (procedure) is fully completed !!"
+    helpContent = helpContent + "<h3>Note:</h3>Please click 'Roll Dice' only if the step (procedure) is fully completed i.e., dice in its original position.!!"
     helpContent = helpContent + "<h2>Happy Experimenting</h2>";
     PIEupdateHelp(helpContent);
 }
