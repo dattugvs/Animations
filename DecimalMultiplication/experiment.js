@@ -65,7 +65,7 @@ function initialiseScene()
     myCenterY  = (mySceneTLY + mySceneBRY) / 2.0;
     wallThickness = 0.20;
 
-    PIEscene.background = new THREE.Color(0xffffff);
+    PIEscene.background=new THREE.Color( 0xbfd1e5 );
     PIEscene.add(new THREE.AmbientLight(0x606060));
 
     raycaster = new THREE.Raycaster();
