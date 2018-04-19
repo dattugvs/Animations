@@ -239,11 +239,14 @@ function loadExperimentElements()
     angleZ[3] = 0.35;  angleZ[4] = 0;    
 
 
-    circle = new THREE.Mesh(new THREE.CircleGeometry(0.5, 64), new THREE.MeshBasicMaterial({color : 0x000000}));
-    circle.position.set(myCenterX-1.3, myCenterY-2.6 - (1.3*4), myCenterZ+1);
+    circle = new THREE.Object3D();
+    cle = new THREE.Mesh(new THREE.CircleGeometry(0.5, 64), new THREE.MeshBasicMaterial({color : 0x00FF00}));
+    circle.add(cle);
+    geometry = new THREE.CircleGeometry(0.5,64);
+    geometry.vertices.shift();
+    var circleoutline = new THREE.Line(geometry, new THREE.MeshBasicMaterial({color : 0x000000}));
+    circle.add(circleoutline);
     PIEaddElement(circle);
-
-
 
     startX[0] = myCenterX-1.3;
     startY[0] = myCenterY-2.6 - (1.3*4);
@@ -316,7 +319,7 @@ function loadExperimentElements()
             startY[i] = startY[i-1]+1.3;
         }
     }
-
+    circle.position.set(startX[0], startY[0], myCenterZ+1);
     resetExperiment();
 
     PIEsetAreaOfInterest(mySceneTLX, mySceneTLY, mySceneBRX, mySceneBRY);  
@@ -407,6 +410,7 @@ function updateExperimentElements(t, dt)
                 dc++;
 
                 circle.position.set(startX[count], startY[count], myCenterZ+1);
+
                 count++;
                 tc = 0;
             }
@@ -515,14 +519,14 @@ function addHeadings()
     material = new THREE.MeshBasicMaterial({color : 0x00ff00});
     quizres[0] = new THREE.Mesh(geometry, material);
     quizres[0].visible = false;
-    quizres[0].position.set(myCenterX-22, startY[10], myCenterZ);
+    quizres[0].position.set(myCenterX-16, startY[10], myCenterZ);
     PIEaddElement(quizres[0]);
 
     geometry = getGeometry("Wrong",1);
     material = new THREE.MeshBasicMaterial({color : 0xff0000});
     quizres[1] = new THREE.Mesh(geometry, material);
     quizres[1].visible = false;
-    quizres[1].position.set(myCenterX-22, startY[10], myCenterZ);
+    quizres[1].position.set(myCenterX-17, startY[10], myCenterZ);
     PIEaddElement(quizres[1]);
 
     addedHeadings = 1;
