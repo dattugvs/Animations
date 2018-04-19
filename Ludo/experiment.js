@@ -109,6 +109,8 @@ function rotate()
         if(count+diceNumber >56)
             diceNumber = 56 - count;
         tc = 0;
+        dice.rotation.set(0,0,0);
+        dice.position.set(myCenterX+15, myCenterY-5, myCenterZ);
         exptType = "Rollc";
     }
     
@@ -186,6 +188,8 @@ function quiz()
             PIEaddElement(quizCircle[i]);
         }
     }
+    dice.rotation.set(0,0,0);
+    dice.position.set(myCenterX+15, myCenterY-5, myCenterZ);
     exptType = "Rollq";
     PIEstartAnimation();
 }
@@ -363,8 +367,7 @@ function updateExperimentElements(t, dt)
 
     if(addedHeadings && (exptType == "Rollc" || exptType == "Rollq"))
     {
-            dice.rotation.set(0,0,0);
-            dice.position.set(myCenterX+15, myCenterY-5, myCenterZ);
+            
             if(diceNumber == 3 || diceNumber == 4)
                   dice.rotateX(0.1);
             else
